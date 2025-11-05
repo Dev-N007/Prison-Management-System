@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Prisoner {
+  id        Int       @id @default(autoincrement())
+  name      String
+  age       Int
+  gender    String
+  crime     String
+  sentence  String
+  status    String    @default("Active")
+  createdAt DateTime  @default(now())
+
+  cellId    Int?
+  cell      Cell?     @relation(fields: [cellId], references: [id])
+  visitors  Visitor[]
+  cases     Case[]
+}
+
+model Cell {
+  id         Int        @id @default(autoincrement())
+  blockName  String
+  capacity   Int
+  prisoners  Prisoner[]
+
+}
+
+model Staff {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  shift     String
+  createdAt DateTime @default(now())
+}
+
+model Case {
+  id         Int       @id @default(autoincrement())
+  title      String
+  status     String
+  hearingDate DateTime
+  prisonerId Int
+  prisoner   Prisoner @relation(fields: [prisonerId], references: [id])
+}
+
+model Visitor {
+  id        Int     @id @default(autoincrement())
+  name      String
+  relation  String
+  visitDate DateTime
+  prisonerId Int
+  prisoner  Prisoner @relation(fields: [prisonerId], references: [id])
+}

@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global body styling */
+body {
+  background: #f3f4f6;
+  color: #111827;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* Smooth tables */
+table {
+  @apply w-full border-collapse bg-white rounded-xl shadow;
+}
+
+th {
+  @apply bg-gray-100 font-semibold uppercase text-sm text-left px-4 py-2 border-b;
+}
+
+td {
+  @apply px-4 py-2 border-b;
+}
+
+/* Form inputs */
+input, select {
+  @apply border rounded-lg p-2 w-full outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+/* Buttons */
+button {
+  @apply transition-all duration-200 font-medium;
+}
