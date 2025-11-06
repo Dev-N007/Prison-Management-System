@@ -1,7 +1,26 @@
-export default function Topbar() {
+import Link from "next/link";
+
+export default function TopBar() {
+  const links = [
+    { href: "/", label: "Dashboard" },
+    { href: "/prisoners", label: "Prisoners" },
+    { href: "/cells", label: "Cells" },
+    { href: "/staff", label: "Staff" },
+    { href: "/visitors", label: "Visitors" },
+    { href: "/cases", label: "Cases" },
+  ];
+
   return (
-    <header className="md:ml-64 h-14 fixed top-0 left-0 right-0 bg-white border-b shadow-sm flex items-center px-6 z-20">
-      <h1 className="text-lg font-semibold">Admin Panel</h1>
-    </header>
+    <nav className="md:hidden fixed top-0 left-0 w-full bg-white shadow z-40 p-3 flex items-center overflow-x-auto whitespace-nowrap space-x-4">
+      {links.map((item) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          className="text-sm px-3 py-2 rounded-lg font-medium hover:bg-gray-100 whitespace-nowrap"
+        >
+          {item.label}
+        </Link>
+      ))}
+    </nav>
   );
 }

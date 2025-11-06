@@ -1,19 +1,16 @@
 import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
+import TopBar from "./Topbar";
 
-export const Layout = ({ title, children }: any) => {
+export function Layout({ title, children }: any) {
   return (
-    <div>
+    <div className="flex">
       <Sidebar />
-      <Topbar />
+      <TopBar />
 
-      <main className="md:ml-64 pt-20 px-6 pb-10 bg-gray-100 min-h-screen">
-        <h1 className="text-3xl font-bold mb-6">{title}</h1>
-
-        <div className="bg-white p-6 rounded-xl shadow-xl border">
-          {children}
-        </div>
+      <main className="flex-1 p-6 md:ml-64 mt-14 md:mt-0 bg-gray-100 min-h-screen">
+        <h1 className="text-2xl font-bold mb-6">{title}</h1>
+        {children}
       </main>
     </div>
   );
-};
+}

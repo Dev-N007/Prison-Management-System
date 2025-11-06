@@ -22,10 +22,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/prisoners": [
+    "/cases": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/prisoners.js"
+      "static/chunks/pages/cases.js"
+    ],
+    "/visitors": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/visitors.js"
     ]
   },
   "ampFirstPages": []
