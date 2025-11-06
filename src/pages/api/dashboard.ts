@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       include: { prisoner: true },
     });
 
-    const upcomingCases = await prisma.case.findMany({
+    const upcomingCases = await prisma.caseRecord.findMany({
       where: { hearingDate: { gte: new Date() } },
       orderBy: { hearingDate: "asc" },
       take: 5,

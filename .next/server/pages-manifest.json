@@ -2,12 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
   "/prisoners": "pages/prisoners.js",
-  "/api/dashboard": "pages/api/dashboard.js",
-  "/api/prisoners": "pages/api/prisoners.js",
-  "/cases": "pages/cases.js",
-  "/prisoners/edit/[id]": "pages/prisoners/edit/[id].js",
-  "/api/cases": "pages/api/cases.js",
-  "/api/prisoners/[id]": "pages/api/prisoners/[id].js"
+  "/api/prisoners": "pages/api/prisoners.js"
 }

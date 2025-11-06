@@ -5,13 +5,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const id = Number(req.query.id);
 
   if (req.method === "GET") {
-    const record = await prisma.case.findUnique({ where: { id } });
+    const record = await prisma.caseRecord.findUnique({ where: { id } });
     return res.json(record);
   }
 
   if (req.method === "PUT") {
     const { title, status, hearing_date, prisoner_id } = req.body;
-    const updated = await prisma.case.update({
+    const updated = await prisma.caseRecord.update({
       where: { id },
       data: {
         title,
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === "DELETE") {
-    await prisma.case.delete({ where: { id } });
+    await prisma.caseRecord.delete({ where: { id } });
     return res.json({ message: "Case deleted" });
   }
 

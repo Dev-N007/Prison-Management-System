@@ -3,13 +3,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const cases = await prisma.case.findMany();
+    const cases = await prisma.caseRecord.findMany();
     return res.json(cases);
   }
 
   if (req.method === "POST") {
     const { title, status, hearingDate, prisonerId } = req.body;
-    const c = await prisma.case.create({
+    const c = await prisma.caseRecord.create({
       data: {
         title,
         status,

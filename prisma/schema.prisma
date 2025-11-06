@@ -20,7 +20,7 @@ model Prisoner {
   cellId    Int?
   cell      Cell?     @relation(fields: [cellId], references: [id])
   visitors  Visitor[]
-  cases     Case[]
+  cases     CaseRecord[]
 }
 
 model Cell {
@@ -39,7 +39,7 @@ model Staff {
   createdAt DateTime @default(now())
 }
 
-model Case {
+model CaseRecord {
   id         Int       @id @default(autoincrement())
   title      String
   status     String
