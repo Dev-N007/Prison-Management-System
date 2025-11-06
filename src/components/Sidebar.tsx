@@ -13,7 +13,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:flex w-64 bg-white border-r h-screen fixed left-0 top-0 shadow-xl">
       <div className="px-6 py-8 w-full">
-        <h2 className="text-2xl font-bold">Prison CMS</h2>
+        <h2 className="text-2xl font-bold">Prison Management System</h2>
         <p className="text-gray-500 text-sm">Admin Console</p>
 
         <nav className="mt-8 space-y-2">
