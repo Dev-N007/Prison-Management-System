@@ -22,7 +22,7 @@ export default function Cells() {
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <Table data={data || []} columns={["id", "blockName", "capacity"]} />
+          <Table data={data || []} columns={["id", "blockName", "capacity"]}  baseUrl="/cells"/>
         )}
       </div>
     </Layout>

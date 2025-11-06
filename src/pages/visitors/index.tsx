@@ -22,7 +22,7 @@ export default function Visitors() {
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <Table data={data || []} columns={["id", "name", "relation", "visitDate", "prisonerId"]} />
+          <Table data={data || []} columns={["id", "name", "relation", "visitDate", "prisonerId"]}  baseUrl="/visitors"/>
         )}
       </div>
     </Layout>

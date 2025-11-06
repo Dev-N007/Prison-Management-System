@@ -22,7 +22,7 @@ export default function Staff() {
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <Table data={data || []} columns={["id", "name", "role", "shift"]} />
+          <Table data={data || []} columns={["id", "name", "role", "shift"]}  baseUrl="/staff"/>
         )}
       </div>
     </Layout>

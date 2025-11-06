@@ -25,6 +25,7 @@ export default function Prisoners() {
           <Table
             data={data || []}
             columns={["id", "name", "age", "gender", "crime", "status"]}
+             baseUrl="/prisoners"
           />
         )}
       </div>

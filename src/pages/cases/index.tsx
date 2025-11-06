@@ -22,7 +22,7 @@ export default function Cases() {
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <Table data={data || []} columns={["id", "title", "status", "hearingDate", "prisonerId"]} />
+          <Table data={data || []} columns={["id", "title", "status", "hearingDate", "prisonerId"]}  baseUrl="/cases"/>
         )}
       </div>
     </Layout>

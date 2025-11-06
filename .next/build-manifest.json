@@ -32,40 +32,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/cases.js"
     ],
-    "/cells": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/cells.js"
-    ],
     "/prisoners": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/prisoners.js"
     ],
-    "/prisoners/add": [
+    "/prisoners/edit/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/prisoners/add.js"
-    ],
-    "/staff": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/staff.js"
-    ],
-    "/staff/add": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/staff/add.js"
-    ],
-    "/visitors": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visitors.js"
-    ],
-    "/visitors/add": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/visitors/add.js"
+      "static/chunks/pages/prisoners/edit/[id].js"
     ]
   },
   "ampFirstPages": []
