@@ -6,9 +6,29 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    const { name, gender, crime, status, cellId, age_min, age_max } = req.query;
+
     const prisoners = await prisma.prisoner.findMany({
-      include: { cell: true }, 
+      where: {
+        AND: [
+          name ? { name: { contains: String(name) } } : {},
+          gender ? { gender: String(gender) } : {},
+          crime ? { crime: { contains: String(crime) } } : {},
+          status ? { status: String(status) } : {},
+          cellId ? { cellId: Number(cellId) } : {},
+          age_min || age_max
+            ? {
+                age: {
+                  gte: age_min ? Number(age_min) : undefined,
+                  lte: age_max ? Number(age_max) : undefined
+                }
+              }
+            : {}
+        ]
+      },
+      include: { cell: true },
     });
+
     return res.json(prisoners);
   }
 

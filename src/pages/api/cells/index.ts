@@ -3,7 +3,24 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const cells = await prisma.cell.findMany();
+    const { blockName, capacity_min, capacity_max } = req.query;
+
+    const cells = await prisma.cell.findMany({
+      where: {
+        AND: [
+          blockName ? { blockName: { contains: String(blockName) } } : {},
+          capacity_min || capacity_max
+            ? {
+                capacity: {
+                  gte: capacity_min ? Number(capacity_min) : undefined,
+                  lte: capacity_max ? Number(capacity_max) : undefined
+                }
+              }
+            : {}
+        ]
+      }
+    });
+
     return res.json(cells);
   }
 
