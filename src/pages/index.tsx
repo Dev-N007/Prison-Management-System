@@ -14,24 +14,40 @@ export default function Dashboard() {
       
       {/* Prisoner Status Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-        {[
-          { label: "Active Prisoners", value: data.active },
-          { label: "Released Prisoners", value: data.released },
-          { label: "Transferred Prisoners", value: data.transferred },
-        ].map((s) => (
-          <div
-            key={s.label}
-            className="bg-white shadow-lg border rounded-xl p-6 text-center hover:shadow-xl transition"
-          >
-            <p className="text-gray-500 text-sm uppercase">{s.label}</p>
-            <h2 className="text-3xl font-bold text-blue-600">{s.value}</h2>
-          </div>
-        ))}
+        <a
+          href="/prisoners?autoStatus=Active"
+          className="bg-white shadow-lg border rounded-xl p-6 text-center hover:shadow-xl transition cursor-pointer"
+        >
+          <p className="text-gray-500 text-sm uppercase">Active Prisoners</p>
+          <h2 className="text-3xl font-bold text-blue-600">{data.active}</h2>
+        </a>
+
+        <a
+          href="/prisoners?autoStatus=Released"
+          className="bg-white shadow-lg border rounded-xl p-6 text-center hover:shadow-xl transition cursor-pointer"
+        >
+          <p className="text-gray-500 text-sm uppercase">Released Prisoners</p>
+          <h2 className="text-3xl font-bold text-blue-600">{data.released}</h2>
+        </a>
+
+        <a
+          href="/prisoners?autoStatus=Transferred"
+          className="bg-white shadow-lg border rounded-xl p-6 text-center hover:shadow-xl transition cursor-pointer"
+        >
+          <p className="text-gray-500 text-sm uppercase">Transferred Prisoners</p>
+          <h2 className="text-3xl font-bold text-blue-600">{data.transferred}</h2>
+        </a>
       </div>
 
       {/* Cells with space */}
-      <h2 className="text-xl font-bold mb-2">Cells with Available Space</h2>
-      <table className="w-full mb-8 bg-white rounded-xl border shadow">
+      <h2 className="text-xl font-bold mb-2 cursor-pointer hover:underline">
+        <a href="/cells?autoSort=free">Cells with Most Available Space</a>
+      </h2>
+
+      <table
+        className="w-full mb-8 bg-white rounded-xl border shadow cursor-pointer"
+        onClick={() => (window.location.href = "/cells?autoSort=free")}
+      >
         <thead>
           <tr className="bg-gray-200">
             <th className="p-3">Block</th>
@@ -40,17 +56,21 @@ export default function Dashboard() {
             <th className="p-3">Free</th>
           </tr>
         </thead>
+
         <tbody>
-          {data.availableCells?.length ? (
-            data.availableCells.map((c: any) => (
+          {data.availableCells
+            ?.sort((a: any, b: any) => b.free - a.free)
+            .slice(0, 5)
+            .map((c: any) => (
               <tr key={c.id} className="border-b hover:bg-gray-50">
                 <td className="p-3">{c.blockName}</td>
                 <td className="p-3">{c.capacity}</td>
                 <td className="p-3">{c.used}</td>
                 <td className="p-3 text-green-600 font-semibold">{c.free}</td>
               </tr>
-            ))
-          ) : (
+            ))}
+
+          {(!data.availableCells || data.availableCells.length === 0) && (
             <tr>
               <td colSpan={4} className="p-3 text-center text-gray-500">
                 No cell data available
@@ -60,8 +80,11 @@ export default function Dashboard() {
         </tbody>
       </table>
 
-      {/* Last Visitors */}
-      <h2 className="text-xl font-bold mb-2">Last 5 Visitors</h2>
+      {/* Last visitors */}
+      <h2 className="text-xl font-bold mb-2 cursor-pointer hover:underline">
+        <a href="/visitors?autoSort=visitDate_desc">Last 5 Visitors</a>
+      </h2>
+
       <table className="w-full mb-8 bg-white rounded-xl border shadow">
         <thead>
           <tr className="bg-gray-200">
@@ -78,7 +101,7 @@ export default function Dashboard() {
                 <td className="p-3">{v.name}</td>
                 <td className="p-3">{v.relation}</td>
                 <td className="p-3">{v.prisoner?.name}</td>
-                <td className="p-3">{v.visitDate?.substring(0,10)}</td>
+                <td className="p-3">{v.visitDate?.substring(0, 10)}</td>
               </tr>
             ))
           ) : (
@@ -92,7 +115,10 @@ export default function Dashboard() {
       </table>
 
       {/* Upcoming Hearings */}
-      <h2 className="text-xl font-bold mb-2">Upcoming Case Hearings</h2>
+      <h2 className="text-xl font-bold mb-2 cursor-pointer hover:underline">
+        <a href="/cases?autoSort=hearingDate_asc">Upcoming Case Hearings</a>
+      </h2>
+
       <table className="w-full bg-white rounded-xl border shadow">
         <thead>
           <tr className="bg-gray-200">
@@ -108,7 +134,7 @@ export default function Dashboard() {
               <tr key={c.id} className="border-b hover:bg-gray-50">
                 <td className="p-3">{c.title}</td>
                 <td className="p-3">{c.prisoner?.name}</td>
-                <td className="p-3">{c.hearingDate.substring(0,10)}</td>
+                <td className="p-3">{c.hearingDate.substring(0, 10)}</td>
                 <td className="p-3">{c.status}</td>
               </tr>
             ))

@@ -2,12 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/": "pages/index.js",
   "/cells": "pages/cells.js",
-  "/staff": "pages/staff.js",
+  "/api/dashboard": "pages/api/dashboard.js",
   "/api/cells": "pages/api/cells.js",
-  "/visitors": "pages/visitors.js",
-  "/api/cases": "pages/api/cases.js",
-  "/api/visitors": "pages/api/visitors.js",
   "/cases": "pages/cases.js",
-  "/api/staff": "pages/api/staff.js"
+  "/api/cases": "pages/api/cases.js"
 }

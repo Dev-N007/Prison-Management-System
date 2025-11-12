@@ -4,6 +4,8 @@ import { Layout } from "@/components/Layout";
 import Table from "@/components/Table";
 import FilterBar from "@/components/FilterBar";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -23,6 +25,22 @@ export default function Prisoners() {
 
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("desc" as "asc" | "desc");
+
+  const router = useRouter();
+
+  useEffect(() => {
+  if (!router.isReady) return;
+
+  const autoStatus = router.query.autoStatus as string;
+  if (!autoStatus) return;
+
+  setFilters((prev) => ({
+    ...prev,
+    status: autoStatus
+  }));
+
+  setPage(1);
+}, [router.isReady]);
 
   const onReset = () => {
     setFilters({
