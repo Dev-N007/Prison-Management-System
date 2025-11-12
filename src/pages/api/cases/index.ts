@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const where: any = {};
 
-    if (title) where.title = { contains: title as string, mode: "insensitive" };
+    if (title) where.title = { contains: title };
     if (status) where.status = status;
     if (prisonerId) where.prisonerId = Number(prisonerId);
 

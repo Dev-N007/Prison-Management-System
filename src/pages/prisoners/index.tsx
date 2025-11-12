@@ -44,9 +44,8 @@ export default function Prisoners() {
 
   const handleSort = useCallback(
     (col: string) => {
-      if (sortBy === col) {
-        setSortOrder((o) => (o === "asc" ? "desc" : "asc"));
-      } else {
+      if (sortBy === col) setSortOrder((o) => (o === "asc" ? "desc" : "asc"));
+      else {
         setSortBy(col);
         setSortOrder("asc");
       }
@@ -64,61 +63,69 @@ export default function Prisoners() {
 
   const { data } = useSWR(url, fetcher);
 
-  if (!data) return <Layout>Loading...</Layout>;
-
-  const rows = Array.isArray(data) ? data : data.data || [];
+  const rows = Array.isArray(data) ? data : data?.data || [];
 
   const formatted = rows.map((p: any) => ({
     ...p,
-    cell: p.cell?.blockName || "Unassigned",
+    cell: p.cellId ? p.cellId : "Unassigned",  // changed to show cellId
   }));
 
   return (
     <Layout title="Prisoners">
-      <div className="flex justify-between mb-4">
-        <h1 className="text-2xl font-bold">Prisoners</h1>
+
+      {/* Filters FIRST (same as other pages) */}
+      <FilterBar onReset={onReset}>
+        <>
+          <input name="name" placeholder="Name" value={filters.name} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <select name="gender" value={filters.gender} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <option value="">Gender</option><option>Male</option><option>Female</option><option>Other</option>
+          </select>
+
+          <input name="crime" placeholder="Crime" value={filters.crime} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <select name="status" value={filters.status} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            <option value="">Status</option><option>Active</option><option>Released</option><option>Transferred</option>
+          </select>
+
+          <input name="age_min" placeholder="Min Age" type="number" value={filters.age_min} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <input name="age_max" placeholder="Max Age" type="number" value={filters.age_max} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <input name="cellId" placeholder="Cell ID" value={filters.cellId} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+        </>
+      </FilterBar>
+
+      {/* Add Prisoner button – placed BELOW filters just like other pages */}
+      <div className="flex justify-end mb-4">
         <Link href="/prisoners/add" className="px-4 py-2 bg-blue-600 text-white rounded">
           + Add Prisoner
         </Link>
       </div>
 
-      <FilterBar onReset={onReset}>
-        <>
-          <input name="name" placeholder="Name" value={filters.name} onChange={handleInput} className="p-2 border rounded" />
-          <select name="gender" value={filters.gender} onChange={handleInput} className="p-2 border rounded">
-            <option value="">Gender</option><option>Male</option><option>Female</option><option>Other</option>
-          </select>
-          <input name="crime" placeholder="Crime" value={filters.crime} onChange={handleInput} className="p-2 border rounded" />
-          <select name="status" value={filters.status} onChange={handleInput} className="p-2 border rounded">
-            <option value="">Status</option><option>Active</option><option>Released</option><option>Transferred</option>
-          </select>
-          <input name="age_min" placeholder="Min Age" type="number" value={filters.age_min} onChange={handleInput} className="p-2 border rounded" />
-          <input name="age_max" placeholder="Max Age" type="number" value={filters.age_max} onChange={handleInput} className="p-2 border rounded" />
-          <input name="cellId" placeholder="Cell ID" value={filters.cellId} onChange={handleInput} className="p-2 border rounded" />
-        </>
-      </FilterBar>
-
       <Table
         data={formatted}
-        columns={["id", "name", "age", "gender", "crime", "sentence", "status", "cell"]}
+        columns={["id", "name", "age", "gender", "crime", "sentence", "status", "cell_Id"]}
         baseUrl="/prisoners"
-        sortableColumns={["id", "name", "age", "status"]}
+        sortableColumns={["id", "name", "age", "status","cell_Id"]}
         sortBy={sortBy}
         sortOrder={sortOrder}
         onSort={handleSort}
       />
 
       <div className="flex justify-between mt-4">
-        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setPage((p) => Math.max(1, p - 1))}>
-          Previous
-        </button>
-
-        <span>Page {data.page || 1} of {data.totalPages || 1}</span>
-
-        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setPage((p) => (p < (data.totalPages || 1) ? p + 1 : p))}>
-          Next
-        </button>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setPage((p) => Math.max(1, p - 1))}>Previous</button>
+        <span>Page {data?.page || 1} of {data?.totalPages || 1}</span>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setPage((p) => (p < (data?.totalPages || 1) ? p + 1 : p))}>Next</button>
       </div>
+
     </Layout>
   );
 }

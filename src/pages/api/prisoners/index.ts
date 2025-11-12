@@ -22,9 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const where: any = {};
 
-    if (name) where.name = { contains: name as string, mode: "insensitive" };
+    if (name) where.name = { contains: name };
     if (gender) where.gender = gender;
-    if (crime) where.crime = { contains: crime as string, mode: "insensitive" };
+    if (crime) where.crime = { contains: crime };
     if (status) where.status = status;
     if (cellId) where.cellId = Number(cellId);
 

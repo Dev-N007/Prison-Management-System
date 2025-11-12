@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       blockName,
       capacity_min,
       capacity_max,
-      sortBy = "createdAt",
+      sortBy = "id",
       sortOrder = "desc",
       page = "1",
       limit = "10",
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const where: any = {};
 
     if (blockName)
-      where.blockName = { contains: blockName as string, mode: "insensitive" };
+      where.blockName = { contains: blockName };
 
     if (capacity_min) where.capacity = { gte: Number(capacity_min) };
     if (capacity_max)
@@ -29,6 +29,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const cells = await prisma.cell.findMany({
       where,
+      include: {
+        prisoners: { select: { id: true } },   // << ADDED
+      },
       orderBy: { [sortBy as string]: sortOrder },
       skip: (pageNum - 1) * pageSize,
       take: pageSize,

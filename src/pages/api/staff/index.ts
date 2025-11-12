@@ -15,8 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const where: any = {};
 
-    if (name) where.name = { contains: name as string, mode: "insensitive" };
-    if (role) where.role = { contains: role as string, mode: "insensitive" };
+    if (name) where.name = { contains: name };
+    if (role) where.role = { contains: role };
     if (shift) where.shift = shift;
 
     const pageNum = Number(page);

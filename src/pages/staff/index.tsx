@@ -42,7 +42,7 @@ export default function Staff() {
     .join("&");
 
   const url = `/api/staff?${query}${query ? "&" : ""}page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
-  
+
   const { data } = useSWR(url, fetcher);
 
   const rows = Array.isArray(data) ? data : data?.data || [];
@@ -51,9 +51,14 @@ export default function Staff() {
     <Layout title="Staff">
       <FilterBar onReset={onReset}>
         <>
-          <input name="name" placeholder="Name" value={filters.name} onChange={handleInput} className="p-2 border rounded" />
-          <input name="role" placeholder="Role" value={filters.role} onChange={handleInput} className="p-2 border rounded" />
-          <select name="shift" value={filters.shift} onChange={handleInput} className="p-2 border rounded">
+          <input name="name" placeholder="Name" value={filters.name} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <input name="role" placeholder="Role" value={filters.role} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <select name="shift" value={filters.shift} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
             <option value="">Shift</option><option>Morning</option><option>Evening</option><option>Night</option>
           </select>
         </>

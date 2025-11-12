@@ -64,13 +64,29 @@ export default function Cases() {
     <Layout title="Case Records">
       <FilterBar onReset={onReset}>
         <>
-          <input name="title" placeholder="Case Title" value={filters.title} onChange={handleInput} className="p-2 border rounded" />
-          <select name="status" value={filters.status} onChange={handleInput} className="p-2 border rounded">
+          <input name="title" placeholder="Case Title" value={filters.title} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <select name="status" value={filters.status} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
             <option value="">Status</option><option>Open</option><option>Closed</option><option>Pending</option>
           </select>
-          <input name="prisonerId" placeholder="Prisoner ID" value={filters.prisonerId} onChange={handleInput} className="p-2 border rounded" />
-          <input name="hearing_from" type="date" value={filters.hearing_from} onChange={handleInput} className="p-2 border rounded" />
-          <input name="hearing_to" type="date" value={filters.hearing_to} onChange={handleInput} className="p-2 border rounded" />
+
+          <input name="prisonerId" placeholder="Prisoner ID" value={filters.prisonerId} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+         <div className="flex flex-col">
+  <label className="text-xs text-gray-600 mb-1">Hearing Date (From)</label>
+  <input name="hearing_from" type="date" value={filters.hearing_from} onChange={handleInput}
+    className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+</div>
+
+<div className="flex flex-col">
+  <label className="text-xs text-gray-600 mb-1">Hearing Date (To)</label>
+  <input name="hearing_to" type="date" value={filters.hearing_to} onChange={handleInput}
+    className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+</div>
+
         </>
       </FilterBar>
 

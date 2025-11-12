@@ -16,7 +16,7 @@ export default function Cells() {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
 
-  const [sortBy, setSortBy] = useState("createdAt");
+  const [sortBy, setSortBy] = useState("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   const onReset = () => {
@@ -52,13 +52,32 @@ export default function Cells() {
 
   const rows = Array.isArray(data) ? data : data?.data || [];
 
+  const formatted = rows.map((cell: any) => {
+  const prisoners = Array.isArray(cell.prisoners) ? cell.prisoners : [];
+
+  return {
+    ...cell,
+    occupied: prisoners.length,
+    prisonerIds:
+      prisoners.length > 0
+        ? prisoners.map((p: any) => p.id).join(", ")
+        : "None",
+  };
+});
+
+
   return (
     <Layout title="Cells">
       <FilterBar onReset={onReset}>
         <>
-          <input name="blockName" placeholder="Block Name" value={filters.blockName} onChange={handleInput} className="p-2 border rounded" />
-          <input name="capacity_min" placeholder="Min Capacity" type="number" value={filters.capacity_min} onChange={handleInput} className="p-2 border rounded" />
-          <input name="capacity_max" placeholder="Max Capacity" type="number" value={filters.capacity_max} onChange={handleInput} className="p-2 border rounded" />
+          <input name="blockName" placeholder="Block Name" value={filters.blockName} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <input name="capacity_min" placeholder="Min Capacity" type="number" value={filters.capacity_min} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <input name="capacity_max" placeholder="Max Capacity" type="number" value={filters.capacity_max} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
         </>
       </FilterBar>
 
@@ -67,10 +86,10 @@ export default function Cells() {
       </div>
 
       <Table
-        data={rows}
-        columns={["id", "blockName", "capacity"]}
+        data={formatted}
+        columns={["id", "blockName", "capacity", "occupied", "prisoner_Ids"]}   // UPDATED
         baseUrl="/cells"
-        sortableColumns={["id", "blockName", "capacity"]}
+        sortableColumns={["id", "blockName", "capacity", "occupied"]}         // UPDATED
         sortBy={sortBy}
         sortOrder={sortOrder}
         onSort={handleSort}

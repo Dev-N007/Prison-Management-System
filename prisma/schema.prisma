@@ -39,20 +39,22 @@ model Staff {
   createdAt DateTime @default(now())
 }
 
+
+
 model CaseRecord {
-  id         Int       @id @default(autoincrement())
-  title      String
-  status     String
+  id          Int       @id @default(autoincrement())
+  title       String
+  status      String
   hearingDate DateTime
-  prisonerId Int
-  prisoner   Prisoner @relation(fields: [prisonerId], references: [id])
+  prisonerId  Int
+  prisoner    Prisoner  @relation(fields: [prisonerId], references: [id], onDelete: Cascade)
 }
 
 model Visitor {
-  id        Int     @id @default(autoincrement())
-  name      String
-  relation  String
-  visitDate DateTime
-  prisonerId Int
-  prisoner  Prisoner @relation(fields: [prisonerId], references: [id])
+  id          Int       @id @default(autoincrement())
+  name        String
+  relation    String
+  visitDate   DateTime
+  prisonerId  Int
+  prisoner    Prisoner  @relation(fields: [prisonerId], references: [id], onDelete: Cascade)
 }

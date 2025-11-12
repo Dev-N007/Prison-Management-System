@@ -27,6 +27,16 @@
       "static/chunks/main.js",
       "static/chunks/pages/cases.js"
     ],
+    "/cells": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/cells.js"
+    ],
+    "/staff": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/staff.js"
+    ],
     "/visitors": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

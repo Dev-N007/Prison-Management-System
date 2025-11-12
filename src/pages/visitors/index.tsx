@@ -64,11 +64,27 @@ export default function Visitors() {
     <Layout title="Visitors">
       <FilterBar onReset={onReset}>
         <>
-          <input name="name" placeholder="Visitor Name" value={filters.name} onChange={handleInput} className="p-2 border rounded" />
-          <input name="relation" placeholder="Relation" value={filters.relation} onChange={handleInput} className="p-2 border rounded" />
-          <input name="prisonerId" placeholder="Prisoner ID" value={filters.prisonerId} onChange={handleInput} className="p-2 border rounded" />
-          <input name="visit_from" type="date" value={filters.visit_from} onChange={handleInput} className="p-2 border rounded" />
-          <input name="visit_to" type="date" value={filters.visit_to} onChange={handleInput} className="p-2 border rounded" />
+          <input name="name" placeholder="Visitor Name" value={filters.name} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <input name="relation" placeholder="Relation" value={filters.relation} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+          <input name="prisonerId" placeholder="Prisoner ID" value={filters.prisonerId} onChange={handleInput}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+
+         <div className="flex flex-col">
+  <label className="text-xs text-gray-600 mb-1">Visit Date (From)</label>
+  <input name="visit_from" type="date" value={filters.visit_from} onChange={handleInput}
+    className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+</div>
+
+<div className="flex flex-col">
+  <label className="text-xs text-gray-600 mb-1">Visit Date (To)</label>
+  <input name="visit_to" type="date" value={filters.visit_to} onChange={handleInput}
+    className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" />
+</div>
+
         </>
       </FilterBar>
 

@@ -17,8 +17,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const where: any = {};
 
-    if (name) where.name = { contains: name as string, mode: "insensitive" };
-    if (relation) where.relation = { contains: relation as string, mode: "insensitive" };
+    if (name) where.name = { contains: name  };
+    if (relation) where.relation = { contains: relation  };
     if (prisonerId) where.prisonerId = Number(prisonerId);
 
     if (visit_from) where.visitDate = { gte: new Date(visit_from as string) };
