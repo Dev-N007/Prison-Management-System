@@ -3,33 +3,52 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const { title, status, hearingDate, prisonerId, hearing_before, hearing_after } = req.query;
+    const {
+      title,
+      status,
+      prisonerId,
+      hearing_from,
+      hearing_to,
+      sortBy = "hearingDate",
+      sortOrder = "desc",
+      page = "1",
+      limit = "10",
+    } = req.query;
+
+    const where: any = {};
+
+    if (title) where.title = { contains: title as string, mode: "insensitive" };
+    if (status) where.status = status;
+    if (prisonerId) where.prisonerId = Number(prisonerId);
+
+    if (hearing_from) where.hearingDate = { gte: new Date(hearing_from as string) };
+    if (hearing_to)
+      where.hearingDate = { ...(where.hearingDate || {}), lte: new Date(hearing_to as string) };
+
+    const pageNum = Number(page);
+    const pageSize = Number(limit);
+
+    const total = await prisma.caseRecord.count({ where });
 
     const cases = await prisma.caseRecord.findMany({
-      where: {
-        AND: [
-          title ? { title: { contains: String(title)} } : {},
-          status ? { status: String(status) } : {},
-          hearingDate ? { hearingDate: new Date(String(hearingDate)) } : {},
-          hearing_before || hearing_after
-            ? {
-                hearingDate: {
-                  lte: hearing_before ? new Date(String(hearing_before)) : undefined,
-                  gte: hearing_after ? new Date(String(hearing_after)) : undefined
-                }
-              }
-            : {},
-          prisonerId ? { prisonerId: Number(prisonerId) } : {}
-        ]
-      }
+      where,
+      orderBy: { [sortBy as string]: sortOrder },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
     });
 
-    return res.json(cases);
+    return res.json({
+      data: cases,
+      total,
+      page: pageNum,
+      totalPages: Math.ceil(total / pageSize),
+    });
   }
 
   if (req.method === "POST") {
     const { title, status, hearingDate, prisonerId } = req.body;
-    const c = await prisma.caseRecord.create({
+
+    const created = await prisma.caseRecord.create({
       data: {
         title,
         status,
@@ -37,7 +56,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         prisonerId,
       },
     });
-    return res.status(201).json(c);
+
+    return res.status(201).json(created);
   }
 
   res.status(405).json({ message: "Method not allowed" });

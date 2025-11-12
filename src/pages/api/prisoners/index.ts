@@ -1,35 +1,53 @@
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    const { name, gender, crime, status, cellId, age_min, age_max } = req.query;
+    const {
+      name,
+      gender,
+      crime,
+      status,
+      age_min,
+      age_max,
+      cellId,
+      sortBy = "createdAt",
+      sortOrder = "desc",
+      page = "1",
+      limit = "10",
+    } = req.query;
+
+    const pageNum = Number(page);
+    const pageSize = Number(limit);
+
+    const where: any = {};
+
+    if (name) where.name = { contains: name as string, mode: "insensitive" };
+    if (gender) where.gender = gender;
+    if (crime) where.crime = { contains: crime as string, mode: "insensitive" };
+    if (status) where.status = status;
+    if (cellId) where.cellId = Number(cellId);
+
+    if (age_min) where.age = { gte: Number(age_min) };
+    if (age_max)
+      where.age = { ...(where.age || {}), lte: Number(age_max) };
+
+    const total = await prisma.prisoner.count({ where });
 
     const prisoners = await prisma.prisoner.findMany({
-      where: {
-        AND: [
-          name ? { name: { contains: String(name) } } : {},
-          gender ? { gender: String(gender) } : {},
-          crime ? { crime: { contains: String(crime) } } : {},
-          status ? { status: String(status) } : {},
-          cellId ? { cellId: Number(cellId) } : {},
-          age_min || age_max
-            ? {
-                age: {
-                  gte: age_min ? Number(age_min) : undefined,
-                  lte: age_max ? Number(age_max) : undefined
-                }
-              }
-            : {}
-        ]
-      },
+      where,
       include: { cell: true },
+      orderBy: { [sortBy as string]: sortOrder },
+      skip: (pageNum - 1) * pageSize,
+      take: pageSize,
     });
 
-    return res.json(prisoners);
+    return res.json({
+      data: prisoners,
+      total,
+      page: pageNum,
+      totalPages: Math.ceil(total / pageSize),
+    });
   }
 
   if (req.method === "POST") {

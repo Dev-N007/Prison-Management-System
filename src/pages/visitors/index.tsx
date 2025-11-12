@@ -1,97 +1,95 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import useSWR from "swr";
 import { Layout } from "@/components/Layout";
-import { Table } from "@/components/Table";
+import Table from "@/components/Table";
+import FilterBar from "@/components/FilterBar";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function Visitors() {
   const [filters, setFilters] = useState({
     name: "",
     relation: "",
     prisonerId: "",
-    visit_before: "",
-    visit_after: ""
+    visit_from: "",
+    visit_to: "",
   });
 
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+
+  const [sortBy, setSortBy] = useState("visitDate");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+  const onReset = () => {
+    setFilters({
+      name: "",
+      relation: "",
+      prisonerId: "",
+      visit_from: "",
+      visit_to: "",
+    });
+    setPage(1);
+  };
+
+  const handleInput = (e: any) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+    setPage(1);
+  };
+
+  const handleSort = useCallback(
+    (col: string) => {
+      if (sortBy === col) setSortOrder((o) => (o === "asc" ? "desc" : "asc"));
+      else {
+        setSortBy(col);
+        setSortOrder("asc");
+      }
+      setPage(1);
+    },
+    [sortBy]
+  );
+
   const query = Object.entries(filters)
-    .filter(([k, v]) => v !== "")
-    .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+    .filter(([, v]) => v !== "")
+    .map(([k, v]) => `${k}=${encodeURIComponent(v as string)}`)
     .join("&");
 
-  const { data, isLoading } = useSWR(`/api/visitors?${query}`, fetcher);
+  const url = `/api/visitors?${query}${query ? "&" : ""}page=${page}&limit=${limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
 
-  function handleChange(e: any) {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  }
+  const { data } = useSWR(url, fetcher);
+
+  const rows = Array.isArray(data) ? data : data?.data || [];
 
   return (
     <Layout title="Visitors">
+      <FilterBar onReset={onReset}>
+        <>
+          <input name="name" placeholder="Visitor Name" value={filters.name} onChange={handleInput} className="p-2 border rounded" />
+          <input name="relation" placeholder="Relation" value={filters.relation} onChange={handleInput} className="p-2 border rounded" />
+          <input name="prisonerId" placeholder="Prisoner ID" value={filters.prisonerId} onChange={handleInput} className="p-2 border rounded" />
+          <input name="visit_from" type="date" value={filters.visit_from} onChange={handleInput} className="p-2 border rounded" />
+          <input name="visit_to" type="date" value={filters.visit_to} onChange={handleInput} className="p-2 border rounded" />
+        </>
+      </FilterBar>
 
-      {/* Filters Section */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <input
-          name="name"
-          placeholder="Visitor Name"
-          value={filters.name}
-          onChange={handleChange}
-          className="p-2 border rounded"
-        />
-
-        <input
-          name="relation"
-          placeholder="Relation"
-          value={filters.relation}
-          onChange={handleChange}
-          className="p-2 border rounded"
-        />
-
-        <input
-          name="prisonerId"
-          placeholder="Prisoner ID"
-          value={filters.prisonerId}
-          onChange={handleChange}
-          className="p-2 border rounded"
-        />
-
-        <input
-          name="visit_before"
-          type="date"
-          value={filters.visit_before}
-          onChange={handleChange}
-          className="p-2 border rounded"
-        />
-
-        <input
-          name="visit_after"
-          type="date"
-          value={filters.visit_after}
-          onChange={handleChange}
-          className="p-2 border rounded"
-        />
+      <div className="flex justify-end mb-4">
+        <a href="/visitors/add" className="px-4 py-2 bg-blue-600 text-white rounded">+ Add Visitor</a>
       </div>
 
-      {/* Add Visitor Button */}
-      <div className="flex justify-end">
-        <a
-          href="/visitors/add"
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow"
-        >
-          + Add Visitor
-        </a>
-      </div>
+      <Table
+        data={rows}
+        columns={["id", "name", "relation", "visitDate", "prisonerId"]}
+        baseUrl="/visitors"
+        sortableColumns={["id", "name", "visitDate", "prisonerId"]}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+        onSort={handleSort}
+      />
 
-      {/* Table Section */}
-      <div className="mt-6">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <Table
-            data={data || []}
-            columns={["id", "name", "relation", "visitDate", "prisonerId"]}
-            baseUrl="/visitors"
-          />
-        )}
+      <div className="flex justify-between mt-4">
+        <button onClick={() => setPage((p) => Math.max(1, p - 1))} className="px-3 py-1 bg-gray-200 rounded">Previous</button>
+        <span>Page {data?.page || 1} of {data?.totalPages || 1}</span>
+        <button onClick={() => setPage((p) => (p < (data?.totalPages || 1) ? p + 1 : p))} className="px-3 py-1 bg-gray-200 rounded">Next</button>
       </div>
     </Layout>
   );

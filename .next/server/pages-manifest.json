@@ -2,14 +2,8 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/prisoners": "pages/prisoners.js",
-  "/api/prisoners": "pages/api/prisoners.js",
-  "/cells": "pages/cells.js",
-  "/api/cells": "pages/api/cells.js",
   "/staff": "pages/staff.js",
-  "/api/staff": "pages/api/staff.js",
   "/visitors": "pages/visitors.js",
-  "/api/visitors": "pages/api/visitors.js",
-  "/api/cases": "pages/api/cases.js",
-  "/cases": "pages/cases.js"
+  "/cases": "pages/cases.js",
+  "/api/cases": "pages/api/cases.js"
 }
