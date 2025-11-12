@@ -27,6 +27,41 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/cases": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/cases.js"
+    ],
+    "/cells": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/cells.js"
+    ],
+    "/prisoners": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/prisoners.js"
+    ],
+    "/prisoners/add": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/prisoners/add.js"
+    ],
+    "/prisoners/delete/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/prisoners/delete/[id].js"
+    ],
+    "/prisoners/edit/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/prisoners/edit/[id].js"
+    ],
+    "/staff": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/staff.js"
+    ],
     "/visitors": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

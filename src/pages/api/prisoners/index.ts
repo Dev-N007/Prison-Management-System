@@ -5,15 +5,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // ✅ Get all prisoners
   if (req.method === "GET") {
     const prisoners = await prisma.prisoner.findMany({
-      include: { cell: true }, // ✅ show cell blockName
+      include: { cell: true }, 
     });
     return res.json(prisoners);
   }
 
-  // ✅ Create a prisoner
   if (req.method === "POST") {
     const { name, age, gender, crime, sentence, status, cellId } = req.body;
 
